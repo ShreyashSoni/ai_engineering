@@ -147,3 +147,6 @@ challenge/
 
 # WandB local sync data.
 wandb/
+
+# Demo export data
+exports/
