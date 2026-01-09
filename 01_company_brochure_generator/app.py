@@ -99,17 +99,17 @@ def generate_brochure_workflow(
         yield "", f"❌ Error: {error_msg}"
 
 
-def get_link_preview(company_url: str, progress=gr.Progress()) -> tuple[str, list]:
+def get_link_preview(company_url: str, progress=gr.Progress()):
     """
     Get link suggestions for preview.
     
     Returns:
-        Tuple of (status_message, links_list)
+        Tuple of (status_message, gr.update for CheckboxGroup)
     """
     # Validate URL
     is_valid, result = validate_url(company_url)
     if not is_valid:
-        return f"❌ Error: {result}", []
+        return f"❌ Error: {result}", gr.update(choices=[], value=[])
     
     _, normalized_url = validate_url(company_url)
     
@@ -118,10 +118,10 @@ def get_link_preview(company_url: str, progress=gr.Progress()) -> tuple[str, lis
         selected_links, error = brochure_service.get_link_suggestions(normalized_url)
         
         if error:
-            return f"❌ Error: {error}", []
+            return f"❌ Error: {error}", gr.update(choices=[], value=[])
         
         if not selected_links:
-            return "⚠️ No relevant links found", []
+            return "⚠️ No relevant links found", gr.update(choices=[], value=[])
         
         # Format links for display
         link_choices = []
@@ -130,10 +130,14 @@ def get_link_preview(company_url: str, progress=gr.Progress()) -> tuple[str, lis
             link_url = link.get("url", "")
             link_choices.append(f"{link_type}: {link_url}")
         
-        return f"✅ Found {len(selected_links)} relevant links", link_choices
+        # Return with all links selected by default
+        return f"✅ Found {len(selected_links)} relevant links", gr.update(
+            choices=link_choices,
+            value=link_choices  # Pre-select all links
+        )
         
     except Exception as e:
-        return f"❌ Error: {str(e)}", []
+        return f"❌ Error: {str(e)}", gr.update(choices=[], value=[])
 
 
 def export_as_pdf(company_name: str) -> tuple[str, str]:
