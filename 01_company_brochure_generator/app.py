@@ -1,5 +1,16 @@
 """Main Gradio application for the Company Brochure Generator MVP."""
 
+import os
+import sys
+
+# Set up library path for WeasyPrint on macOS (if using Homebrew)
+if sys.platform == 'darwin':  # macOS
+    homebrew_lib = '/opt/homebrew/lib'
+    if os.path.exists(homebrew_lib):
+        current_path = os.environ.get('DYLD_FALLBACK_LIBRARY_PATH', '')
+        if homebrew_lib not in current_path:
+            os.environ['DYLD_FALLBACK_LIBRARY_PATH'] = f"{homebrew_lib}:{current_path}" if current_path else homebrew_lib
+
 import gradio as gr
 from typing import Iterator
 import time
