@@ -11,7 +11,12 @@ class ExportService:
     
     def __init__(self):
         """Initialize the export service."""
-        self.exports_dir = "exports"
+        # Get the directory where this file is located
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        # Go up one level to the app directory
+        app_dir = os.path.dirname(current_dir)
+        # Create exports directory in the app directory
+        self.exports_dir = os.path.join(app_dir, "exports")
         os.makedirs(self.exports_dir, exist_ok=True)
     
     def _get_html_template(self, company_name: str, content_html: str) -> str:

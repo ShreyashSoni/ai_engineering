@@ -151,44 +151,44 @@ def get_link_preview(company_url: str, progress=gr.Progress()):
         return f"❌ Error: {str(e)}", gr.update(choices=[], value=[])
 
 
-def export_as_pdf(company_name: str) -> tuple[str, str]:
+def export_as_pdf(company_name: str) -> tuple[str | None, str]:
     """
     Export current brochure as PDF.
     
     Returns:
-        Tuple of (file_path, status_message)
+        Tuple of (file_path or None, status_message)
     """
     if not current_brochure["content"]:
-        return "", "❌ No brochure to export. Generate a brochure first."
+        return None, "❌ No brochure to export. Generate a brochure first."
     
     try:
         file_path = export_service.export_to_pdf(
             current_brochure["content"],
             company_name
         )
-        return file_path, f"✅ PDF exported successfully to {file_path}"
+        return file_path, f"✅ PDF exported successfully to '{file_path}'"
     except Exception as e:
-        return "", f"❌ Error exporting PDF: {str(e)}"
+        return None, f"❌ Error exporting PDF: {str(e)}"
 
 
-def export_as_html(company_name: str) -> tuple[str, str]:
+def export_as_html(company_name: str) -> tuple[str | None, str]:
     """
     Export current brochure as HTML.
     
     Returns:
-        Tuple of (file_path, status_message)
+        Tuple of (file_path or None, status_message)
     """
     if not current_brochure["content"]:
-        return "", "❌ No brochure to export. Generate a brochure first."
+        return None, "❌ No brochure to export. Generate a brochure first."
     
     try:
         file_path = export_service.export_to_html(
             current_brochure["content"],
             company_name
         )
-        return file_path, f"✅ HTML exported successfully to {file_path}"
+        return file_path, f"✅ HTML exported successfully to '{file_path}'"
     except Exception as e:
-        return "", f"❌ Error exporting HTML: {str(e)}"
+        return None, f"❌ Error exporting HTML: {str(e)}"
 
 
 def create_app():
