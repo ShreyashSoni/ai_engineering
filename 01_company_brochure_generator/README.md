@@ -43,7 +43,14 @@ OPENAI_API_KEY=your_openai_api_key_here
 GOOGLE_API_KEY=your_google_api_key_here
 ```
 
-### 3. Run the Application
+### 3. Test the setup
+
+**Run Python script**
+```bash
+python test_setup.py
+```
+
+### 4. Run the Application
 
 **Option A: Using the run script (Recommended for macOS)**
 ```bash
